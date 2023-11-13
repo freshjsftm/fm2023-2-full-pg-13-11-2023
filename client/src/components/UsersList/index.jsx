@@ -6,7 +6,7 @@ const UsersList = () => {
   const { users, error, isFetching } = useSelector((state) => state.users);
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getUsers({ res: 2 })); // eslint-disable-next-line
+    dispatch(getUsers()); // eslint-disable-next-line
   }, []);
   const mapUsers = (user) => <li key={user.id}>{user.email}</li>;
   return (
