@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllUsers } from '../api';
+import { getAllUsers, createUser } from '../api';
 
 const USERS_SLICE_NAME = 'users';
 
@@ -10,6 +10,20 @@ export const getUsers = createAsyncThunk(
       const {
         data: { data },
       } = await getAllUsers(params);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
+export const addUser = createAsyncThunk(
+  `${USERS_SLICE_NAME}/addUser`,
+  async (params, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await createUser(params);
       return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message);
@@ -37,6 +51,9 @@ const usersSlice = createSlice({
       state.isFetching = false;
       state.error = action.payload;
     });
+    builder.addCase(addUser.pending, (state, action) => {});
+    builder.addCase(addUser.fulfilled, (state, action) => {});
+    builder.addCase(addUser.rejected, (state, action) => {});
   },
 });
 

@@ -10,7 +10,7 @@ const httpClient = axios.create({
 export const getAllUsers = (options = {}) => {
   const defaultOptions = {
     page: 1,
-    amount: 15,
+    amount: 5,
   };
   const finallyOptions = {
     ...defaultOptions,
@@ -19,7 +19,7 @@ export const getAllUsers = (options = {}) => {
   return httpClient.get(`/users?${qs.stringify(finallyOptions)}`);
 };
 
-//export const createUsers = () => httpClient.post('/users');
+export const createUser = (values) => httpClient.post('/users', values);
 //export const getOneUser = () => httpClient.get('/users/4');
 //export const deleteUsers = () => httpClient.delete('/users/4');
 //export const updateUsers = () => httpClient.patch('/users/4');
