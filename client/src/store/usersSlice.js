@@ -6,10 +6,10 @@ export const getUsers = createAsyncThunk(
   `${USERS_SLICE_NAME}/getUsers`,
   async (params = { res: 5 }, thunkAPI) => {
     try {
-      const data = await fetch(
-        'https://randomuser.me/api/?results=' + params.res
+      const {data} = await fetch(
+        'http://localhost:3000/api/users?page=3&amount=3'
       ).then((response) => response.json());
-      return data.results;
+      return data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.message)
     }

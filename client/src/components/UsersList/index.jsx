@@ -8,7 +8,7 @@ const UsersList = () => {
   useEffect(() => {
     dispatch(getUsers({ res: 2 })); // eslint-disable-next-line
   }, []);
-  const mapUsers = (user) => <li key={user.login.uuid}>{user.email}</li>;
+  const mapUsers = (user) => <li key={user.id}>{user.email}</li>;
   return (
     <>
       {error && <p>{error}</p>}
