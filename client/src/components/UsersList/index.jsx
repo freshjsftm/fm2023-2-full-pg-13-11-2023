@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import { getUsers } from '../../store/usersSlice';
 
 const UsersList = () => {
@@ -8,7 +9,13 @@ const UsersList = () => {
   useEffect(() => {
     dispatch(getUsers()); // eslint-disable-next-line
   }, []);
-  const mapUsers = (user) => <li key={user.id}>{user.email}</li>;
+  const mapUsers = (user) => (
+    <li key={user.id}>
+      {user.email}
+      <Link to={`/users/${user.id}`}> profile</Link>
+      <button>delete</button>
+    </li>
+  );
   return (
     <>
       {error && <p>{error}</p>}
