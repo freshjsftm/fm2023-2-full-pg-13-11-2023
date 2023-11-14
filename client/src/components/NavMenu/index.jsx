@@ -8,6 +8,7 @@ const NavMenu = () => {
         <li><NavLink to='/'>home</NavLink></li>
         <li><NavLink to='/todo'>to do</NavLink></li>
         <li><NavLink to='/users'>users</NavLink></li>
+        <li><NavLink to='/sign-up'>registration</NavLink></li>
       </ul>
     </nav>
   );

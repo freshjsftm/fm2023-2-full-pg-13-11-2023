@@ -15,10 +15,11 @@ const initialValues = {
 };
 
 const UserForm = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const onSubmit = (values, formikBag) => {
     dispatch(addUser(values));
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -26,6 +27,9 @@ const UserForm = () => {
       validationSchema={userSchema}
     >
       {(formikProps) => {
+        const handleAvatar = ({ target }) => {
+          formikProps.setFieldValue('avatar', target.files[0]);
+        };
         return (
           <Form encType="multipart/form-data">
             <label>
@@ -60,7 +64,7 @@ const UserForm = () => {
             </label>
             <label>
               <span>avatar:</span>
-              <input name="avatar" type="file" />
+              <input name="avatar" type="file" onChange={handleAvatar} />
             </label>
             <button type="submit">add user</button>
           </Form>

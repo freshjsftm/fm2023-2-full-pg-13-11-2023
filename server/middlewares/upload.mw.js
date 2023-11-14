@@ -4,7 +4,7 @@ const { PATH_IMAGES } = require('../constants');
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, `../${PATH_IMAGES}`));
+    cb(null, path.resolve(__dirname, `../../${PATH_IMAGES}`));
   },
   filename: (req, file, cb) => {
     const uniqueFileName =

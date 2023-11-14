@@ -37,23 +37,36 @@ const usersSlice = createSlice({
     users: [],
     error: null,
     isFetching: false,
+    userAuth: null
   },
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(getUsers.pending, (state, action) => {
       state.isFetching = true;
+      state.error = null;
     });
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isFetching = false;
       state.users = action.payload;
+      state.error = null;
     });
     builder.addCase(getUsers.rejected, (state, action) => {
       state.isFetching = false;
       state.error = action.payload;
     });
-    builder.addCase(addUser.pending, (state, action) => {});
-    builder.addCase(addUser.fulfilled, (state, action) => {});
-    builder.addCase(addUser.rejected, (state, action) => {});
+    builder.addCase(addUser.pending, (state, action) => {
+      state.isFetching = true;
+      state.error = null;
+    });
+    builder.addCase(addUser.fulfilled, (state, action) => {
+      state.isFetching = false;
+      state.error = null;
+      state.userAuth = action.payload;
+    });
+    builder.addCase(addUser.rejected, (state, action) => {
+      state.isFetching = false;
+      state.error = action.payload;
+    });
   },
 });
 
