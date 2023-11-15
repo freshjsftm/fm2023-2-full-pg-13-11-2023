@@ -1,63 +1,28 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { getAllUsers, createUser, getOneUser, deleteUser } from '../api';
+import { pendingReducer, rejectReducer, decorateAsyncThunk } from './helpers';
 
 const USERS_SLICE_NAME = 'users';
 
-export const getUsers = createAsyncThunk(
-  `${USERS_SLICE_NAME}/getUsers`,
-  async (params, thunkAPI) => {
-    try {
-      const {
-        data: { data },
-      } = await getAllUsers(params);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const getUsers = decorateAsyncThunk({
+  type: `${USERS_SLICE_NAME}/getUsers`,
+  thunk: getAllUsers,
+});
 
-export const addUser = createAsyncThunk(
-  `${USERS_SLICE_NAME}/addUser`,
-  async (params, thunkAPI) => {
-    try {
-      const {
-        data: { data },
-      } = await createUser(params);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const addUser = decorateAsyncThunk({
+  type: `${USERS_SLICE_NAME}/addUser`,
+  thunk: createUser,
+});
 
-export const getUser = createAsyncThunk(
-  `${USERS_SLICE_NAME}/getUser`,
-  async (params, thunkAPI) => {
-    try {
-      const {
-        data: { data },
-      } = await getOneUser(params);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const getUser = decorateAsyncThunk({
+  type: `${USERS_SLICE_NAME}/getUser`,
+  thunk: getOneUser,
+});
 
-export const delUser = createAsyncThunk(
-  `${USERS_SLICE_NAME}/delUser`,
-  async (params, thunkAPI) => {
-    try {
-      const {
-        data: { data },
-      } = await deleteUser(params);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
-    }
-  }
-);
+export const delUser = decorateAsyncThunk({
+  type: `${USERS_SLICE_NAME}/delUser`,
+  thunk: deleteUser,
+});
 
 const usersSlice = createSlice({
   name: USERS_SLICE_NAME,
@@ -70,58 +35,34 @@ const usersSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(getUsers.pending, (state, action) => {
-      state.isFetching = true;
-      state.error = null;
-    });
+    builder.addCase(getUsers.pending, pendingReducer);
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.isFetching = false;
       state.users = action.payload;
       state.error = null;
     });
-    builder.addCase(getUsers.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload;
-    });
-    builder.addCase(addUser.pending, (state, action) => {
-      state.isFetching = true;
-      state.error = null;
-    });
+    builder.addCase(getUsers.rejected, rejectReducer);
+    builder.addCase(addUser.pending, pendingReducer);
     builder.addCase(addUser.fulfilled, (state, action) => {
       state.isFetching = false;
       state.error = null;
       state.userAuth = action.payload;
     });
-    builder.addCase(addUser.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload;
-    });
-    builder.addCase(getUser.pending, (state, action) => {
-      state.isFetching = true;
-      state.error = null;
-    });
+    builder.addCase(addUser.rejected, rejectReducer);
+    builder.addCase(getUser.pending, pendingReducer);
     builder.addCase(getUser.fulfilled, (state, action) => {
       state.isFetching = false;
       state.error = null;
       state.currentUser = action.payload;
     });
-    builder.addCase(getUser.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload;
-    });
-    builder.addCase(delUser.pending, (state, action) => {
-      state.isFetching = true;
-      state.error = null;
-    });
+    builder.addCase(getUser.rejected, rejectReducer);
+    builder.addCase(delUser.pending, pendingReducer);
     builder.addCase(delUser.fulfilled, (state, action) => {
       state.isFetching = false;
       state.error = null;
       state.users = state.users.filter((user) => user.id !== action.payload.id);
     });
-    builder.addCase(delUser.rejected, (state, action) => {
-      state.isFetching = false;
-      state.error = action.payload;
-    });
+    builder.addCase(delUser.rejected, rejectReducer);
   },
 });
 
