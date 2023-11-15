@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getAllUsers, createUser, getOneUser } from '../api';
+import { getAllUsers, createUser, getOneUser, deleteUser } from '../api';
 
 const USERS_SLICE_NAME = 'users';
 
@@ -45,6 +45,20 @@ export const getUser = createAsyncThunk(
   }
 );
 
+export const delUser = createAsyncThunk(
+  `${USERS_SLICE_NAME}/delUser`,
+  async (params, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await deleteUser(params);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const usersSlice = createSlice({
   name: USERS_SLICE_NAME,
   initialState: {
@@ -52,7 +66,7 @@ const usersSlice = createSlice({
     error: null,
     isFetching: false,
     userAuth: null,
-    currentUser: null
+    currentUser: null,
   },
   reducers: {},
   extraReducers: (builder) => {
@@ -92,6 +106,19 @@ const usersSlice = createSlice({
       state.currentUser = action.payload;
     });
     builder.addCase(getUser.rejected, (state, action) => {
+      state.isFetching = false;
+      state.error = action.payload;
+    });
+    builder.addCase(delUser.pending, (state, action) => {
+      state.isFetching = true;
+      state.error = null;
+    });
+    builder.addCase(delUser.fulfilled, (state, action) => {
+      state.isFetching = false;
+      state.error = null;
+      state.users = state.users.filter((user) => user.id !== action.payload.id);
+    });
+    builder.addCase(delUser.rejected, (state, action) => {
       state.isFetching = false;
       state.error = action.payload;
     });

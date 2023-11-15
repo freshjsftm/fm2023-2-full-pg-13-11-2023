@@ -6,6 +6,7 @@ const httpClient = axios.create({
 });
 
 export const getOneUser = (id) => httpClient.get(`/users/${id}`);
+export const deleteUser = (id) => httpClient.delete(`/users/${id}`);
 
 export const getAllUsers = (options = {}) => {
   const defaultOptions = {
@@ -18,7 +19,6 @@ export const getAllUsers = (options = {}) => {
   };
   return httpClient.get(`/users?${qs.stringify(finallyOptions)}`);
 };
-
 export const createUser = (values) =>
   httpClient.post('/users', values, {
     headers: { 'Content-Type': 'multipart/form-data' },

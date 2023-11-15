@@ -8,12 +8,6 @@ const UserPage = lazy(() => import('./pages/UserPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const UserProfile = lazy(() => import('./components/UserProfile'));
 
-// import HomePage from './pages/HomePage';
-// import TodoPage from './pages/TodoPage';
-// import UserPage from './pages/UserPage';
-// import RegistrationPage from './pages/RegistrationPage';
-// import UserProfile from './components/UserProfile';
-
 const App = () => {
   return (
     <BrowserRouter>
