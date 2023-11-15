@@ -19,13 +19,16 @@ module.exports.getAllTasks = async (req, res, next) => {
   try {
     const { userInstance, pagination } = req;
     const tasks = await userInstance.getTasks({
-      where: { isDone: false },
-      include: [
-        {
-          model: User,
-          attributes: ['email'],
-        },
-      ],
+      // where: { isDone: false },
+      // include: [
+      //   {
+      //     model: User,
+      //     attributes: ['email'],
+      //   },
+      // ],
+      attributes: {
+        exclude: ['userId', 'createdAt', 'updatedAt'],
+      },
       ...pagination,
     });
     if (tasks.length === 0) {

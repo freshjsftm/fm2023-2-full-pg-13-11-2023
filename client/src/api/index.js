@@ -24,6 +24,7 @@ export const createUser = (values) =>
     headers: { 'Content-Type': 'multipart/form-data' },
   });
 
+export const getAllUsersTasks = ({id}) => httpClient.get(`/users/${id}/tasks`);
 
 //export const deleteUsers = () => httpClient.delete('/users/4');
 //export const updateUsers = () => httpClient.patch('/users/4');
