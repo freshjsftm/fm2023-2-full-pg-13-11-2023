@@ -2,4 +2,4 @@
 !.gitignore
 
 **/node_modules/
-**/public/
+/public/images/*

@@ -8,10 +8,17 @@ import CONSTANTS from '../../constants';
 const UserProfile = () => {
   const { idUser } = useParams();
   const dispatch = useDispatch();
+
   const {
-    users: { error: usersError, isFetching: usersIsFetching, currentUser },
-    tasks: { error: tasksError, isFetching: tasksIsFetching, tasks },
-  } = useSelector((store) => ({ users: store.users, tasks: store.tasks }));
+    error: usersError,
+    isFetching: usersIsFetching,
+    currentUser,
+  } = useSelector((store) => store.users);
+  const {
+    error: tasksError,
+    isFetching: tasksIsFetching,
+    tasks,
+  } = useSelector((store) => store.tasks);
 
   useEffect(() => {
     dispatch(getUser(Number(idUser)));
